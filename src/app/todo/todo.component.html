@@ -10,13 +10,13 @@
               <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
               <mat-hint>Add a task name</mat-hint>
             </mat-form-field>
-            <button mat-raised-button [disabled]="todoForm.invalid " color="primary">Add a task</button>
+            <button (click)="onAddTask()" mat-raised-button [disabled]="todoForm.invalid " color="primary">Add a task</button>
           </form>
         </mat-card>
       </div>
     </div>
     <div class="col-md-9">
-      <div cdkDropListGroup>
+      <div class="list" cdkDropListGroup>
         <div class="col-md-4">
           <!-- todo -->
           <div class="example-container">
@@ -27,7 +27,7 @@
               [cdkDropListData]="tasks"
               class="example-list"
               (cdkDropListDropped)="onDrop($event)">
-              <div class="example-box" *ngFor="let item of tasks" cdkDrag>{{item}}</div>
+              <div class="example-box" *ngFor="let item of tasks" cdkDrag>{{ item.description }}</div>
             </div>
           </div>
         </div>
@@ -38,10 +38,10 @@
 
             <div
               cdkDropList
-              [cdkDropListData]="tasks"
+              [cdkDropListData]="inProgress"
               class="example-list"
               (cdkDropListDropped)="onDrop($event)">
-              <div class="example-box" *ngFor="let item of tasks" cdkDrag>{{item}}</div>
+              <div class="example-box" *ngFor="let item of inProgress" cdkDrag>{{ item.description }}</div>
             </div>
           </div>
         </div>
@@ -52,10 +52,10 @@
 
             <div
               cdkDropList
-              [cdkDropListData]="tasks"
+              [cdkDropListData]="done"
               class="example-list"
               (cdkDropListDropped)="onDrop($event)">
-              <div class="example-box" *ngFor="let item of tasks" cdkDrag>{{item}}</div>
+              <div class="example-box" *ngFor="let item of done" cdkDrag>{{ item.description }}</div>
             </div>
           </div>
         </div>
