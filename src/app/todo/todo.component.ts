@@ -14,6 +14,9 @@ export class TodoComponent implements OnInit {
   tasks : ITask [] = [];
   inProgress : ITask [] = [];
   done : ITask [] = [];
+  updateIndex !: any;
+  isEditEnable: boolean = false;
+
 
   constructor(private fb: FormBuilder) { }
 
@@ -27,13 +30,37 @@ export class TodoComponent implements OnInit {
     this.tasks.push({
       description:this.todoForm.value.item,
       done: false
-    })
+    });
+    this.todoForm.reset();
   }
 
   onDeleteTask(i: number){
     this.tasks.splice(i,1)
   }
-  
+
+  onDeleteInProgress(i: number){
+    this.inProgress.splice(i,1)
+  }
+
+  onDeleteDone(i: number){
+    this.done.splice(i,1)
+  }
+
+  onEditTask(item:ITask, i:number){
+    this.todoForm.controls['item'].setValue(item.description);
+    this.updateIndex = i;
+    this.isEditEnable = true;
+  }
+
+  onUpdateTask(){
+    this.tasks[this.updateIndex].description = this.todoForm.value.item;
+    this.tasks[this.updateIndex].done = false;
+    this.todoForm.reset();
+    this.updateIndex = undefined;
+    this.isEditEnable = false;
+
+  }
+
   onDrop(event: CdkDragDrop<ITask[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
