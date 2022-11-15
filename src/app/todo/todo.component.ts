@@ -1,5 +1,7 @@
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ITask } from '../model/task.model';
 
 @Component({
   selector: 'app-todo',
@@ -9,9 +11,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export class TodoComponent implements OnInit {
 
   todoForm !: FormGroup;
-  tasks : any [] = [];
-  inProgress : any [] = [];
-  done : any [] = [];
+  tasks : ITask [] = [];
+  inProgress : ITask [] = [];
+  done : ITask [] = [];
 
   constructor(private fb: FormBuilder) { }
 
@@ -19,6 +21,19 @@ export class TodoComponent implements OnInit {
     this.todoForm = this.fb.group({
       item : ['',Validators.required]
     })
+  }
+
+  onDrop(event: CdkDragDrop<ITask[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
   }
 
 }
